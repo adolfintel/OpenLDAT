@@ -1,6 +1,6 @@
 ##############################################################
 
-openldat.name=OpenLDAT Model 2
+openldat.name=OpenLDAT Model 1
 openldat.vid.0=0x2341
 openldat.pid.0=0x0036
 openldat.vid.1=0x2341
