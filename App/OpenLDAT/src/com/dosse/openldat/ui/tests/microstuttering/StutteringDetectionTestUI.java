@@ -57,7 +57,7 @@ public abstract class StutteringDetectionTestUI extends javax.swing.JFrame {
         if (stutters != 0) {
             jLabel2.setForeground(new Color(255, 96, 16));
         }
-        asText = "FlickeringDetected\t" + flickeringDetected + "\r\n";
+        asText = "FlickeringDetected\t" + flickeringDetected + "\r\n\r\nRun\tTime\tStutter\r\n";
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         for (int i = 0; i < times.length; i++) {
             dtm.addRow(new Object[]{(Integer) (i + 1), times[i]});
@@ -238,9 +238,16 @@ public abstract class StutteringDetectionTestUI extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.Double.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(jTable1);
