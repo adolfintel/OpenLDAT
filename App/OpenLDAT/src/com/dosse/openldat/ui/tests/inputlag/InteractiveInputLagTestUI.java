@@ -46,7 +46,7 @@ import javax.swing.table.DefaultTableModel;
  * @author dosse
  */
 public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
-
+    
     private Device d;
     private InteractiveInputLagTest test;
     private int n = 0;
@@ -75,12 +75,12 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
                     dtm.addRow(new Object[]{(Integer) n, (Double) delay});
                     tot += delay;
                 }
-
+                
                 @Override
                 public void onDone(Map results) {
-
+                    
                 }
-
+                
                 @Override
                 public void onError(Exception e) {
                     stopUIUpdater = true;
@@ -106,40 +106,71 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
         }
         thresholdSlider1.setValue(test.getThreshold());
         jComboBox1.setSelectedIndex(test.getSensitivity());
+        jComboBox2.setSelectedIndex(test.getAutoFire()?1:0);
         uiUpdater();
         setFocusTraversalPolicy(new FocusTraversalPolicy() {
             @Override
             public Component getComponentAfter(Container cntnr, Component cmpnt) {
-                if(cmpnt==thresholdSlider1) return jComboBox1;
-                if(cmpnt==jComboBox1) return jScrollPane1;
-                if(cmpnt==jScrollPane1) return jButton3;
-                if(cmpnt==jButton3) return jButton2;
-                if(cmpnt==jButton2) return jButton1;
-                if(cmpnt==jButton1) return thresholdSlider1;
+                if (cmpnt == thresholdSlider1) {
+                    return jComboBox1;
+                }
+                if (cmpnt == jComboBox1) {
+                    return jComboBox2;
+                }
+                if (cmpnt == jComboBox2) {
+                    return jScrollPane1;
+                }
+                if (cmpnt == jScrollPane1) {
+                    return jButton3;
+                }
+                if (cmpnt == jButton3) {
+                    return jButton2;
+                }
+                if (cmpnt == jButton2) {
+                    return jButton1;
+                }
+                if (cmpnt == jButton1) {
+                    return thresholdSlider1;
+                }
                 return null;
             }
-
+            
             @Override
             public Component getComponentBefore(Container cntnr, Component cmpnt) {
-                if(cmpnt==thresholdSlider1) return jButton1;
-                if(cmpnt==jComboBox1) return thresholdSlider1;
-                if(cmpnt==jScrollPane1) return jComboBox1;
-                if(cmpnt==jButton3) return jScrollPane1;
-                if(cmpnt==jButton2) return jButton3;
-                if(cmpnt==jButton1) return jButton2;
+                if (cmpnt == thresholdSlider1) {
+                    return jButton1;
+                }
+                if (cmpnt == jComboBox1) {
+                    return thresholdSlider1;
+                }
+                if (cmpnt == jComboBox2) {
+                    return jComboBox1;
+                }
+                if (cmpnt == jScrollPane1) {
+                    return jComboBox2;
+                }
+                if (cmpnt == jButton3) {
+                    return jScrollPane1;
+                }
+                if (cmpnt == jButton2) {
+                    return jButton3;
+                }
+                if (cmpnt == jButton1) {
+                    return jButton2;
+                }
                 return null;
             }
-
+            
             @Override
             public Component getFirstComponent(Container cntnr) {
                 return thresholdSlider1;
             }
-
+            
             @Override
             public Component getLastComponent(Container cntnr) {
                 return jButton1;
             }
-
+            
             @Override
             public Component getDefaultComponent(Container cntnr) {
                 return jButton1;
@@ -151,10 +182,10 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setIconImage(Utils.loadAndScaleIcon("/com/dosse/openldat/ui/icon.png", (int) (128 * DPI_SCALE), (int) (128 * DPI_SCALE)).getImage());
     }
-
+    
     private boolean stopUIUpdater = false;
     private long lastUIUpdateT = 0;
-
+    
     private void uiUpdater() {
         if (stopUIUpdater) {
             return;
@@ -214,6 +245,8 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Total System Latency - Interactive Test");
@@ -362,6 +395,15 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("Click source");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "External button", "Autofire (to this PC)" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -374,10 +416,14 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(189, Short.MAX_VALUE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,7 +435,11 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel5);
@@ -460,7 +510,7 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
             public boolean accept(File file) {
                 return file.isDirectory() || file.getName().toLowerCase().endsWith(".txt");
             }
-
+            
             @Override
             public String getDescription() {
                 return "Text files (*.txt)";
@@ -494,8 +544,12 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        test.setAutoFire(jComboBox2.getSelectedIndex() == 1);
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+    
     public abstract void onClose();
-
+    
     public static void run(Device d, Runnable doneCallback) {
         if (d == null || !d.isOpen() || !d.hasLightSensor()) {
             new ErrorDialog(new TestException(TestException.INCOMPATIBLE_DEVICE)) {
@@ -522,12 +576,14 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

@@ -12,7 +12,7 @@
 #define FEATURE_HIGHSENS1 0b00000100 //increases sensor gain (lsb)
 #define FEATURE_MONITOR   0b00001000 //just monitor the light values, ignore clicks
 #define FEATURE_NOCLICK   0b00010000 //don't send clicks to PC (will still be visible in the app and the LED)
-#define FEATURE_FASTADC   0b00100000 //fast ADC=26us analogRead, accurate ADC=104us analogRead
+#define FEATURE_FASTADC   0b00100000 //fast ADC=26us conversion, accurate ADC=104us conversion
 #define FEATURE_HIGHSENS2 0b01000000 //increases sensor gain (msb)
 //#define FEATURE_7       0b10000000
 
@@ -77,14 +77,14 @@ void lightSensor_unbuffered_click() {
     OSCILLOSCOPE_DEBUG_PULSE();
     *v = analogRead(A0);
     *b = buttonPressed;
+    buttonPressed = 0;
     #ifdef SERIAL_DEBUG
     Serial.print(v);
     Serial.print(F(","));
-    Serial.println(buttonPressed);
+    Serial.println(b);
     #else
     Serial.write(buffer, sizeof(int)+sizeof(byte));
     #endif
-    buttonPressed = 0;
     OSCILLOSCOPE_DEBUG_PULSE();
   }
   free(buffer);
@@ -119,6 +119,7 @@ void lightSensor_buffered_monitor() {
   #ifdef SERIAL_DEBUG
   Serial.println(F("A0"));
   #endif
+  OSCILLOSCOPE_DEBUG_PULSE();
   while (!Serial.available()) {
     buffer[counter] = analogRead(A0);
     if (++counter == LARGE_BUFFER_SIZE) {
@@ -149,6 +150,7 @@ void lightSensor_buffered_click() {
   #ifdef SERIAL_DEBUG
   Serial.println(F("Light,Click"));
   #endif
+  OSCILLOSCOPE_DEBUG_PULSE();
   while (!Serial.available()) {
     sbuffer[counter] = analogRead(A0);
     bbuffer[counter] = buttonPressed;
@@ -188,6 +190,7 @@ void lightSensor(byte flags) {
       TCCR4D &= ~(_BV(WGM41) | _BV(WGM40));
       TC4H = 3;
       OCR4C = 255;
+      TCNT4H = 0;
       TCNT4 = 0;
       interrupts();
       attachInterrupt(digitalPinToInterrupt(7), (flags&FEATURE_NOCLICK)?autofireISR_noclick:autofireISR, RISING);

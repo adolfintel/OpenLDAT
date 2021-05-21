@@ -30,6 +30,7 @@ public abstract class InteractiveInputLagTest implements ITest {
     private Device d;
     private int threshold = 100;
     private byte sensitivity = 2, state = 0; //0=waiting for click, 1=waiting for light, 2=waiting for dark
+    private boolean autoFire = false;
     private static final boolean unbuffered = false, fastADC = true;
     private IBuffer lWindow, cWindow;
     private final double sampleRate;
@@ -56,7 +57,7 @@ public abstract class InteractiveInputLagTest implements ITest {
                                 onNewDataPoint(1000.0 * (t - clickT));
                                 state = 2;
                             } else {
-                                if (t - clickT > 1) {
+                                if (t - clickT > 0.9) {
                                     state = 0;
                                 }
                             }
@@ -97,7 +98,7 @@ public abstract class InteractiveInputLagTest implements ITest {
                             onNewDataPoint(1000.0 * (t - clickT));
                             state = 2;
                         } else {
-                            if (t - clickT > 1) {
+                            if (t - clickT > 0.9) {
                                 state = 0;
                             }
                         }
@@ -142,7 +143,7 @@ public abstract class InteractiveInputLagTest implements ITest {
     @Override
     public void begin() {
         try {
-            d.lightSensorButtonMode(unbuffered, sensitivity, fastADC, true, false, callback);
+            d.lightSensorButtonMode(unbuffered, sensitivity, fastADC, !autoFire, autoFire, callback);
         } catch (Exception ex) {
             onError(ex);
         }
@@ -174,6 +175,18 @@ public abstract class InteractiveInputLagTest implements ITest {
         }
         this.sensitivity = sensitivity > 3 ? 3 : sensitivity < 0 ? 0 : sensitivity;
         begin();
+    }
+
+    public void setAutoFire(boolean autofire) {
+        if (autofire == this.autoFire) {
+            return;
+        }
+        this.autoFire = autofire;
+        begin();
+    }
+
+    public boolean getAutoFire() {
+        return autoFire;
     }
 
     public byte getState() {

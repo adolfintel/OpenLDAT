@@ -290,15 +290,15 @@ public class Device {
         }
         if (noBuffer) {
             if (fastADC) {
-                return 21000.0;
+                return 21228.0;
             } else {
                 return 7798.0;
             }
         } else {
             if (fastADC) {
-                return 29177.6;
+                return 29574.4;
             } else {
-                return 8758.4;
+                return 8780.8;
             }
         }
     }
@@ -379,9 +379,9 @@ public class Device {
             }
         } else {
             if (fastADC) {
-                return 28413.0;
+                return 28896.0;
             } else {
-                return 8679.3;
+                return 8738.1;
             }
         }
     }
