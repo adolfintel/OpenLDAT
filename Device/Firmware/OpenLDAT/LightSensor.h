@@ -79,9 +79,9 @@ void lightSensor_unbuffered_click() {
     *b = buttonPressed;
     buttonPressed = 0;
     #ifdef SERIAL_DEBUG
-    Serial.print(v);
+    Serial.print(*v);
     Serial.print(F(","));
-    Serial.println(b);
+    Serial.println(*b);
     #else
     Serial.write(buffer, sizeof(int)+sizeof(byte));
     #endif
