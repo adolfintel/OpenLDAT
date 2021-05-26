@@ -11,8 +11,6 @@ openldat.vid.3=0x2A03
 openldat.pid.3=0x8036
 openldat.vid.4=0x4370
 openldat.pid.4=0x0001
-openldat.vid.4=0x4370
-openldat.pid.4=0x0002
 
 openldat.upload.tool=avrdude
 openldat.upload.protocol=avr109
