@@ -33,6 +33,8 @@ timeout /t 2 /nobreak > NUL
 for /f "tokens=1* delims==" %%I in ('wmic path win32_pnpentity get caption  /format:list ^| find "Arduino Leonardo bootloader"') do (
 	call :flash "%%~J"
 )
+echo Failed: the device did not enter bootloader mode
+goto exit
 
 :flash <device>
 setlocal
@@ -42,7 +44,7 @@ set "num=%num:)=%"
 set port=COM%num%
 echo Flashing...
 pushd "%avrdudepath%"
-avrdude.exe -v -C..\etc\avrdude.conf -patmega32u4 -cavr109 -P%port% -b57600 -D -V -Uflash:w:%FIRMWARE%:i
+avrdude.exe -v -C..\etc\avrdude.conf -patmega32u4 -cavr109 -P%port% -b57600 -D -Uflash:w:%FIRMWARE%:i
 if %ERRORLEVEL%==0 goto success
 echo Flashing failed
 goto exit
