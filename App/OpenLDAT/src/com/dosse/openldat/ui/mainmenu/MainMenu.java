@@ -84,7 +84,7 @@ public class MainMenu extends javax.swing.JFrame {
                 if (!d.isOpen()) { //we're returning after a test failed due to a device I/O error
                     System.exit(0);
                 }
-                
+
                 Utils.focusWindow(MainMenu.this);
                 if (currentlySelectedTestButton != null) {
                     currentlySelectedTestButton.requestFocus();
@@ -300,7 +300,7 @@ public class MainMenu extends javax.swing.JFrame {
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                new AboutScreen(MainMenu.this);
+                new AboutScreen(MainMenu.this, d);
             }
         });
         JPanel filler = new JPanel();
@@ -402,7 +402,7 @@ public class MainMenu extends javax.swing.JFrame {
         setTitle(getTitle() + " - " + d.getModel());
         setVisible(true);
         if (!(Utils.isWindows() || Utils.isLinux() || Utils.isMac())) {
-            new ErrorDialog(new ApplicationError("Unsupported platform","OpenLDAT was not tested on this platform.<br/>The application will continue, but expect trouble.",null)) {
+            new ErrorDialog(new ApplicationError("Unsupported platform", "OpenLDAT was not tested on this platform.<br/>The application will continue, but expect trouble.", null)) {
                 @Override
                 public void onClose() {
                 }

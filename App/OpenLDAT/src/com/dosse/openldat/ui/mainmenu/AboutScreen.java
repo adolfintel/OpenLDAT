@@ -17,6 +17,8 @@
 package com.dosse.openldat.ui.mainmenu;
 
 import com.dosse.openldat.Utils;
+import com.dosse.openldat.device.Device;
+import com.dosse.openldat.ui.tests.driver.DriverTestMenu;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
@@ -30,12 +32,14 @@ import javax.swing.border.TitledBorder;
 public class AboutScreen extends javax.swing.JDialog {
 
     private Timer t;
+    private Device device;
 
     /**
      * Creates new form AboutScreen
      */
-    public AboutScreen(java.awt.Frame parent) {
+    public AboutScreen(java.awt.Frame parent, Device device) {
         super(parent, true);
+        this.device = device;
         initComponents();
         float DPI_SCALE = Utils.getDPIScaling();
         jLabel1.setFont(jLabel1.getFont().deriveFont(32 * DPI_SCALE));
@@ -125,6 +129,11 @@ public class AboutScreen extends javax.swing.JDialog {
         jPanel1.setForeground(new java.awt.Color(48, 48, 48));
 
         jLabel1.setText("OpenLDAT");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -178,6 +187,27 @@ public class AboutScreen extends javax.swing.JDialog {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private long lastLogoClick = 0;
+    private int logoClicks = 0;
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        if (System.currentTimeMillis() - lastLogoClick > 400) {
+            logoClicks = 1;
+        } else {
+            logoClicks++;
+        }
+        lastLogoClick = System.currentTimeMillis();
+        if (logoClicks == 7) {
+            logoClicks = 0;
+            DriverTestMenu.run(device, new Runnable() {
+                @Override
+                public void run() {
+                    getParent().setVisible(true);
+                }
+            });
+            getParent().setVisible(false);
+        }
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
