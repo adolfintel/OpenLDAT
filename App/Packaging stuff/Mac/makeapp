@@ -2,7 +2,7 @@
 # using https://github.com/Jorl17/jar2app
 # using https://github.com/tofi86/universalJavaApplicationStub
 # run /usr/libexec/java_home -V to see your multiple jdks installation path
-JAVAPATH="./jre/openjdk-11.jdk/Contents"
+JAVAPATH="./jre/openjdk-11-jre/Contents"
 JARPATH="./openldat/OpenLDAT.jar"
 LIBPATH="./openldat/lib"
 APPNAME="OpenLDAT"
