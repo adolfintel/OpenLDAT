@@ -5,13 +5,21 @@
         <group>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/inputlag/InteractiveInputLagTestUI.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/overdrive/PixelOverdriveTestResults.java</file>
-            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/mainmenu/AboutScreen.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/processing/filters/FFTFilter.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/pixelresponse/PixelResponseTestResults.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/inputlag/InteractiveInputLagTest.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/overdrive/PixelOverdriveTest.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/driver/DriverTestMenu.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/ITest.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/processing/filters/PeakHoldFilter.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/testscreen/ITestScreen.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/mainmenu/AboutScreen.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/microstuttering/StutteringDetectionTestUI.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/inputlag/InputLagTest.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/device/Device.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/manual/test_inputlag_manual.html</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/mainmenu/MainMenu.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/pwm/PWMDetectionTest.java</file>
         </group>
     </open-files>
 </project-private>

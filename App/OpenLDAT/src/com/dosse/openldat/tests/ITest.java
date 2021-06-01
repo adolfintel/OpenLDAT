@@ -23,8 +23,12 @@ import java.util.Map;
  * @author dosse
  */
 public interface ITest {
+
     public void begin();
+
     public void cancel();
+
     public void onDone(Map results);
+
     public void onError(Exception e);
 }

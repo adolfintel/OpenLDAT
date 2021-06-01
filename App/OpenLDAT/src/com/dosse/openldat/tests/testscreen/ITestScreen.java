@@ -21,42 +21,42 @@ package com.dosse.openldat.tests.testscreen;
  * @author dosse
  */
 public interface ITestScreen {
-    
-    public abstract void flashColor(float r, float g, float b, double ms);
 
-    public abstract boolean setColor(float r, float g, float b);
+    public void flashColor(float r, float g, float b, double ms);
 
-    public abstract void setTarget(float x, float y, float size, boolean black);
+    public boolean setColor(float r, float g, float b);
 
-    public abstract void setTargetAbsolute(float x, float y, float size, boolean black);
+    public void setTarget(float x, float y, float size, boolean black);
 
-    public abstract void hideTarget();
+    public void setTargetAbsolute(float x, float y, float size, boolean black);
 
-    public abstract int getScreenW();
+    public void hideTarget();
 
-    public abstract int getScreenH();
+    public int getScreenW();
 
-    public abstract void setFlashOnClick(boolean flashOnClick);
+    public int getScreenH();
 
-    public abstract void setFlicker(boolean bkFlicker);
+    public void setFlashOnClick(boolean flashOnClick);
 
-    public abstract boolean getFlashOnClick();
+    public void setFlicker(boolean bkFlicker);
 
-    public abstract boolean isFlickering();
+    public boolean getFlashOnClick();
 
-    public abstract void setFakeLoad(long cpuMs, long gpuMs);
+    public boolean isFlickering();
 
-    public abstract long getFakeCPULoad();
+    public void setFakeLoad(long cpuMs, long gpuMs);
 
-    public abstract long getFakeGPULoad();
+    public long getFakeCPULoad();
 
-    public abstract void close();
+    public long getFakeGPULoad();
 
-    public abstract void onEnterPressed();
+    public void close();
 
-    public abstract void onCancel();
+    public void onEnterPressed();
 
-    public abstract void onError(Exception e);
+    public void onCancel();
 
-    public abstract int getRefreshRate();
+    public void onError(Exception e);
+
+    public int getRefreshRate();
 }
