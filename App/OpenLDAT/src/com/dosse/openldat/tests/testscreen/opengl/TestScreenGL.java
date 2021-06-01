@@ -367,10 +367,13 @@ public class TestScreenGL implements ITestScreen {
     @Override
     public boolean setColor(float r, float g, float b) {
         synchronized (bkMutex) {
+            if (r == or && g == og && b == ob) {
+                return false;
+            }
             or = r;
             og = g;
             ob = b;
-            return !(r == or && g == og && b == ob);
+            return true;
         }
     }
 
@@ -420,7 +423,7 @@ public class TestScreenGL implements ITestScreen {
 
     @Override
     public void setFlicker(boolean bkFlicker) {
-        synchronized(bkMutex){
+        synchronized (bkMutex) {
             this.bkFlicker = bkFlicker;
         }
     }
@@ -432,7 +435,7 @@ public class TestScreenGL implements ITestScreen {
 
     @Override
     public boolean isFlickering() {
-        synchronized(bkMutex){
+        synchronized (bkMutex) {
             return bkFlicker;
         }
     }
