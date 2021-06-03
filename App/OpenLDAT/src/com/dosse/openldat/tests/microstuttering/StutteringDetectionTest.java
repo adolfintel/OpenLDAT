@@ -275,7 +275,7 @@ public abstract class StutteringDetectionTest extends Thread implements ITest {
             for (int i = 1; i < transitions.size(); i++) {
                 frameTimes.add(1000.0 * (double) (transitions.get(i) - transitions.get(i - 1)) / sampleRate);
             }
-            if (transitions.isEmpty()) {
+            if (frameTimes.isEmpty()) {
                 throw new TestException(TestException.ANALYSIS_FAILED);
             }
             ret.put("frameTimes", frameTimes.toArray(new Double[0]));

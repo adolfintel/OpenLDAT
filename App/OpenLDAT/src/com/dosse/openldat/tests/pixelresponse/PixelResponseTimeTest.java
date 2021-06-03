@@ -196,7 +196,7 @@ public abstract class PixelResponseTimeTest extends Thread implements ITest {
                         throw new TestException(TestException.USER_ABORT);
                     }
                     double[] white = shootMinMaxAvg((byte) sensitivity, true);
-                    if (white[1] > 650 && step[1] > 0) {
+                    if (white[1] > 650 && sensitivity > 0) {
                         sensitivity--;
                     } else {
                         double noise = white[1] - white[0];
@@ -323,8 +323,7 @@ public abstract class PixelResponseTimeTest extends Thread implements ITest {
                                 transitionStart = 0;
                                 transitionEnd = 0;
                                 state = 0;
-                            }
-                            if (samples[i] - endL <= range * th1 && transitionEnd == 0) {
+                            } else if (samples[i] - endL <= range * th1 && transitionEnd == 0) {
                                 transitionEnd = i;
                             }
                         }

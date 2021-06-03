@@ -195,7 +195,7 @@ public abstract class PixelOverdriveTest extends Thread implements ITest {
                         throw new TestException(TestException.USER_ABORT);
                     }
                     double[] white = shootMinMaxAvg((byte) sensitivity, true);
-                    if (white[1] > 650 && step[1] > 0) {
+                    if (white[1] > 650 && sensitivity > 0) {
                         sensitivity--;
                     } else {
                         double noise = white[1] - white[0];
@@ -359,45 +359,31 @@ public abstract class PixelOverdriveTest extends Thread implements ITest {
                     Arrays.sort(samples);
                     String key = "e" + from[0] + ">" + to[0];
                     keys.add(key);
-                    if (lFrom > lTo) {
-                        for (int i = 1; i < samples.length; i++) {
+                    for (int i = 1; i < samples.length; i++) {
                             if (samples[i] >= endL && samples[i - 1] < endL) {
                                 transitionI = i;
                                 break;
                             }
                         }
-                        if (transitionI == -1) { //did not undershoot
+                        if (transitionI == -1) { //did not overshoot/undershoot
                             ret.put(key, 0.0);
                             continue;
                         }
+                    if (lFrom > lTo) {
                         samples = Arrays.copyOfRange(samples, 0, transitionI);
                     } else {
-                        for (int i = 1; i < samples.length; i++) {
-                            if (samples[i] >= endL && samples[i - 1] < endL) {
-                                transitionI = i;
-                                break;
-                            }
-                        }
-                        if (transitionI == -1) { //did not overshoot
-                            ret.put(key, 0.0);
-                            continue;
-                        }
                         samples = Arrays.copyOfRange(samples, transitionI, samples.length);
                     }
-                    if (endL == 0) {
-                        ret.put(key, 0.0);
+                    if (lFrom > lTo) {
+                        int undershoot = samples.length == 0 ? 0 : (endL - samples[(int) (samples.length * 0.01)]);
+                        double absoluteRange = absoluteFromL - absoluteToL;
+                        double absoluteUndershoot = undershoot / gain[sensitivity];
+                        ret.put(key, 100 * (double) absoluteUndershoot / (double) absoluteRange);
                     } else {
-                        if (lFrom > lTo) {
-                            int undershoot = samples.length == 0 ? 0 : (endL - samples[(int) (samples.length * 0.01)]);
-                            double absoluteRange = absoluteFromL - absoluteToL;
-                            double absoluteUndershoot = undershoot / gain[sensitivity];
-                            ret.put(key, 100 * (double) absoluteUndershoot / (double) absoluteRange);
-                        } else {
-                            int overshoot = samples.length == 0 ? 0 : (samples[(int) (samples.length * 0.99)] - endL);
-                            double absoluteRange = absoluteToL - absoluteFromL;
-                            double absoluteOvershoot = overshoot / gain[sensitivity];
-                            ret.put(key, 100 * (double) absoluteOvershoot / (double) absoluteRange);
-                        }
+                        int overshoot = samples.length == 0 ? 0 : (samples[(int) (samples.length * 0.99)] - endL);
+                        double absoluteRange = absoluteToL - absoluteFromL;
+                        double absoluteOvershoot = overshoot / gain[sensitivity];
+                        ret.put(key, 100 * (double) absoluteOvershoot / (double) absoluteRange);
                     }
                 }
             }
