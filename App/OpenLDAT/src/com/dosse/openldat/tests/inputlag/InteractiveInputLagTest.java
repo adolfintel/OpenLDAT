@@ -43,33 +43,35 @@ public abstract class InteractiveInputLagTest implements ITest {
         public void onDataBufferReceived(int[] light, int[] click) {
             for (int i = 0; i < light.length; i++) {
                 double t = (double) sampleN / sampleRate;
-                if (click[i] == 1) {
-                    clickT = t;
-                    if (light[i] < threshold) {
-                        state = 1;
-                    }
-                } else {
-                    switch (state) {
-                        case 0:
-                            break;
-                        case 1:
-                            if (light[i] >= threshold) {
-                                onNewDataPoint(1000.0 * (t - clickT));
-                                state = 2;
-                            } else {
-                                if (t - clickT > 0.9) {
-                                    state = 0;
-                                }
+                switch (state) {
+                    case 0:
+                        if (click[i] == 1) {
+                            clickT = t;
+                            if (light[i] < threshold) {
+                                state = 1;
                             }
-                            break;
-                        case 2:
-                            if (light[i] < threshold && (t - clickT) > 0.2 /*"debounce" 200ms*/) {
+                        }
+                        break;
+                    case 1:
+                        if (click[i] == 1) {
+                            clickT = t;
+                        }
+                        if (light[i] >= threshold) {
+                            onNewDataPoint(1000.0 * (t - clickT));
+                            state = 2;
+                        } else {
+                            if (t - clickT > 0.9) {
                                 state = 0;
                             }
-                            break;
-                        default:
-                            break;
-                    }
+                        }
+                        break;
+                    case 2:
+                        if (light[i] < threshold && (t - clickT) > 0.2 /*"debounce" 200ms*/) {
+                            state = 0;
+                        }
+                        break;
+                    default:
+                        break;
                 }
                 sampleN++;
             }
@@ -84,33 +86,35 @@ public abstract class InteractiveInputLagTest implements ITest {
         @Override
         public void onDataSampleReceived(int light, int click) {
             double t = (double) sampleN / sampleRate;
-            if (click == 1) {
-                clickT = t;
-                if (light < threshold) {
-                    state = 1;
-                }
-            } else {
-                switch (state) {
-                    case 0:
-                        break;
-                    case 1:
-                        if (light >= threshold) {
-                            onNewDataPoint(1000.0 * (t - clickT));
-                            state = 2;
-                        } else {
-                            if (t - clickT > 0.9) {
-                                state = 0;
-                            }
+            switch (state) {
+                case 0:
+                    if (click == 1) {
+                        clickT = t;
+                        if (light < threshold) {
+                            state = 1;
                         }
-                        break;
-                    case 2:
-                        if (light < threshold && (t - clickT) > 0.2 /*"debounce" 200ms*/) {
+                    }
+                    break;
+                case 1:
+                    if (click == 1) {
+                        clickT = t;
+                    }
+                    if (light >= threshold) {
+                        onNewDataPoint(1000.0 * (t - clickT));
+                        state = 2;
+                    } else {
+                        if (t - clickT > 0.9) {
                             state = 0;
                         }
-                        break;
-                    default:
-                        break;
-                }
+                    }
+                    break;
+                case 2:
+                    if (light < threshold && (t - clickT) > 0.2 /*"debounce" 200ms*/) {
+                        state = 0;
+                    }
+                    break;
+                default:
+                    break;
             }
             sampleN++;
             if (cWindow != null) {
