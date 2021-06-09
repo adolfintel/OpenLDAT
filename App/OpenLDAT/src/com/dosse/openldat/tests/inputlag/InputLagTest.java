@@ -133,8 +133,13 @@ public abstract class InputLagTest extends Thread implements ITest {
             return -1;
         }
         int[] data = b.getData();
-        Arrays.sort(data);
-        return data[(int) (data.length * 0.95)];
+        int max = data[0];
+        for (int i = 1; i < data.length; i++) {
+            if (data[i] > max) {
+                max = data[i];
+            }
+        }
+        return max;
     }
 
     @Override
@@ -230,7 +235,7 @@ public abstract class InputLagTest extends Thread implements ITest {
             if (range < 32) {
                 throw new TestException(TestException.INSUFFICIENT_CONTRAST);
             }
-            whiteThreshold = black + range * 0.2f; //above this it's considered white
+            whiteThreshold = black + range * 0.3f; //above this it's considered white
             blackThreshold = black + range * 0.7f; //below this it's considered black
             ArrayList<Integer> transitions = new ArrayList<>(), clicks = new ArrayList<>();
             byte state = -1;
