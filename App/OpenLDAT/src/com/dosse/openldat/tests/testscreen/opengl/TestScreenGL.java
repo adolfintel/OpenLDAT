@@ -142,6 +142,9 @@ public class TestScreenGL implements ITestScreen {
         glfwWindowHint(GLFW_RED_BITS, mode.redBits());
         glfwWindowHint(GLFW_GREEN_BITS, mode.greenBits());
         glfwWindowHint(GLFW_BLUE_BITS, mode.blueBits());
+        if (vsyncMode == VSYNC_ON_ALT) {
+            glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE); //forces compositor to stay on so we can turn vsync off in the application and use the compositor's own vsync
+        }
         if (Utils.isMac()) {
             window = glfwCreateWindow(300, 300, "OpenLDAT Test Screen", NULL, NULL);
         } else {
@@ -238,7 +241,7 @@ public class TestScreenGL implements ITestScreen {
                 glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
                 break;
             case VSYNC_ON_ALT:
-                glfwSwapInterval(1);
+                glfwSwapInterval(0);
                 glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
                 break;
         }
@@ -269,13 +272,13 @@ public class TestScreenGL implements ITestScreen {
             }
             synchronized (bkMutex) {
                 if (flashMsLeft > 0) {
-                    glClearColor(rr, gg, bb, 0.0f);
+                    glClearColor(rr, gg, bb, 1.0f);
                     flashMsLeft -= msSinceLastFrame;
                 } else {
                     if (bkFlicker) {
-                        glClearColor(frame % 2 == 0 ? or : 0, frame % 2 == 0 ? og : 0, frame % 2 == 0 ? ob : 0, 0.0f);
+                        glClearColor(frame % 2 == 0 ? or : 0, frame % 2 == 0 ? og : 0, frame % 2 == 0 ? ob : 0, 1.0f);
                     } else {
-                        glClearColor(or, og, ob, 0.0f);
+                        glClearColor(or, og, ob, 1.0f);
                     }
                 }
             }
