@@ -23,7 +23,7 @@
     <ul>
     <li><b>Off</b>: This is the mode favored by competitive gamers. It allows the game to run as fast as the hardware allows it to get lower latency, at the cost of image tearing, increased heat, and sometimes bugs.</li>
     <li><b>On</b>: Traditional VSync. The application draws to a buffer then waits for the screen to be ready before displaying it. This mode limits the application framerate to the refresh rate of the display, therefore introducing up to a full screen refresh of latency, and the framerate is, that also introduces input delay. Note that the video driver may force triple buffering and/or prerendering of frames, introducing additional delay.</li>
-    <li><b>On (alternative implementation)</b>: Another implementation of VSync that may reduce latency in some cases by letting the desktop compositor handle VSync.</li>
+    <li><b>On (alternative implementation)</b>: Another implementation of VSync that may reduce latency in some cases by letting the desktop compositor handle VSync. May not be supported by all hardware and software combinations.</li>
     </ul>
     <b>Note</b>: like most modern games, the test will run in what is usually called "Borderless fullscreen" and not "Exclusive fullscreen".
 </p>
