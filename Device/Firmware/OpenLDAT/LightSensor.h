@@ -23,28 +23,36 @@ void buttonISR() {
   unsigned long t = millis();
   unsigned long tdiff = t - lastButtonISR;
   if (tdiff >= BUTTON_DEBOUNCE_MS) {
-    buttonPressed = 1;
-    Mouse.click();
+    if(PINE&0x40){
+      buttonPressed = 1;
+      Mouse.press(MOUSE_LEFT);
+    }else{
+      Mouse.release(MOUSE_LEFT);  
+    }
   }
   lastButtonISR = t;
 }
 
 void autofireISR() {
-  buttonPressed = 1;
-  Mouse.click();
+  if(PINE&0x40){
+    buttonPressed = 1;
+    Mouse.press(MOUSE_LEFT);
+  }else{
+    Mouse.release(MOUSE_LEFT);  
+  }
 }
 
 void buttonISR_noclick() {
   unsigned long t = millis();
   unsigned long tdiff = t - lastButtonISR;
   if (tdiff >= BUTTON_DEBOUNCE_MS) {
-    buttonPressed = 1;
+    if(PINE&0x40) buttonPressed = 1;
   }
   lastButtonISR = t;
 }
 
 void autofireISR_noclick() {
-  buttonPressed = 1;
+  if(PINE&0x40) buttonPressed = 1;
 }
 
 
@@ -184,7 +192,7 @@ void lightSensor(byte flags) {
       noInterrupts();
       TCCR4C |= _BV(COM4D1);
       TCCR4C &= ~(_BV(COM4D0));
-      OCR4D = 32;
+      OCR4D = 64;
       TCCR4B &= ~(_BV(CS43) | _BV(CS42) | _BV(CS41) | _BV(CS40));
       TCCR4B |= _BV(CS43) | _BV(CS42) | _BV(CS41) | _BV(CS40);
       TCCR4D &= ~(_BV(WGM41) | _BV(WGM40));
@@ -193,12 +201,12 @@ void lightSensor(byte flags) {
       TCNT4H = 0;
       TCNT4 = 0;
       interrupts();
-      attachInterrupt(digitalPinToInterrupt(7), (flags&FEATURE_NOCLICK)?autofireISR_noclick:autofireISR, RISING);
+      attachInterrupt(digitalPinToInterrupt(7), (flags&FEATURE_NOCLICK)?autofireISR_noclick:autofireISR, CHANGE);
     } else {
       //enable button power
       pinMode(4, OUTPUT);
       digitalWrite(4, HIGH);
-      attachInterrupt(digitalPinToInterrupt(7), (flags&FEATURE_NOCLICK)?buttonISR_noclick:buttonISR, RISING);
+      attachInterrupt(digitalPinToInterrupt(7), (flags&FEATURE_NOCLICK)?buttonISR_noclick:buttonISR, CHANGE);
     }
   }
   //configure ADC

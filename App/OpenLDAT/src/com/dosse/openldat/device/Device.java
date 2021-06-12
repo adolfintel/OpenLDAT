@@ -290,7 +290,7 @@ public class Device {
         }
         if (noBuffer) {
             if (fastADC) {
-                return 21228.0;
+                return 21000.0;
             } else {
                 return 7798.0;
             }
@@ -373,7 +373,7 @@ public class Device {
         }
         if (noBuffer) {
             if (fastADC) {
-                return 20696.0;
+                return 20710.0;
             } else {
                 return 7796.0;
             }
