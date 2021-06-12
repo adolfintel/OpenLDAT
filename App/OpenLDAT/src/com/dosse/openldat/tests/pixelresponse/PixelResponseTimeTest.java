@@ -222,7 +222,7 @@ public abstract class PixelResponseTimeTest extends Thread implements ITest {
             double sampleRate = d.getLightSensorMonitorModeSampleRate(unbuffered, fastADC);
             int peakHoldFilterWindowSize = -1;
             if (flickeringDetected) {
-                peakHoldFilterWindowSize = PeakHoldFilter.findBestWindowSize(noisiestSample, (int) (sampleRate * 0.001), (int) (sampleRate * 0.1), (int) (sampleRate * 0.00025), 4);
+                peakHoldFilterWindowSize = PeakHoldFilter.findBestWindowSize(noisiestSample, (int) (sampleRate * 0.001), (int) (sampleRate * 0.02), (int) (sampleRate * 0.00011), 16);
                 if (peakHoldFilterWindowSize == -1) {
                     peakHoldFilterWindowSize = (int) (sampleRate * 0.0085);
                     System.err.println("WARNING: Unable to determine best filtering parameters, using default");

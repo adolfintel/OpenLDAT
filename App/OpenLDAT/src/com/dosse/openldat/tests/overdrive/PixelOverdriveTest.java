@@ -257,7 +257,7 @@ public abstract class PixelOverdriveTest extends Thread implements ITest {
             double sampleRate = d.getLightSensorMonitorModeSampleRate(unbuffered, fastADC);
             int peakHoldFilterWindowSize = -1;
             if (flickeringDetected) {
-                peakHoldFilterWindowSize = PeakHoldFilter.findBestWindowSize(noisiestSample, (int) (sampleRate * 0.001), (int) (sampleRate * 0.1), (int) (sampleRate * 0.00025), 4);
+                peakHoldFilterWindowSize = PeakHoldFilter.findBestWindowSize(noisiestSample, (int) (sampleRate * 0.001), (int) (sampleRate * 0.02), (int) (sampleRate * 0.00011), 16);
                 if (peakHoldFilterWindowSize == -1) {
                     peakHoldFilterWindowSize = (int) (sampleRate * 0.0085);
                     System.err.println("WARNING: Unable to determine best filtering parameters, using default");
@@ -375,12 +375,12 @@ public abstract class PixelOverdriveTest extends Thread implements ITest {
                         samples = Arrays.copyOfRange(samples, transitionI, samples.length);
                     }
                     if (lFrom > lTo) {
-                        int undershoot = samples.length == 0 ? 0 : (endL - samples[(int) (samples.length * 0.01)]);
+                        int undershoot = samples.length == 0 ? 0 : (endL - samples[(int) (samples.length * 0.001)]);
                         double absoluteRange = absoluteFromL - absoluteToL;
                         double absoluteUndershoot = undershoot / gain[sensitivity];
                         ret.put(key, 100 * (double) absoluteUndershoot / (double) absoluteRange);
                     } else {
-                        int overshoot = samples.length == 0 ? 0 : (samples[(int) (samples.length * 0.99)] - endL);
+                        int overshoot = samples.length == 0 ? 0 : (samples[(int) (samples.length * 0.999)] - endL);
                         double absoluteRange = absoluteToL - absoluteFromL;
                         double absoluteOvershoot = overshoot / gain[sensitivity];
                         ret.put(key, 100 * (double) absoluteOvershoot / (double) absoluteRange);
