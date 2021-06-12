@@ -1,4 +1,3 @@
- 
 [Setup]
 AppName="OpenLDAT"
 AppVersion="1.0.0"
@@ -24,6 +23,8 @@ LZMAUseSeparateProcess=yes
 InternalCompressLevel=ultra64
 SetupIconFile="icon.ico"
 UninstallDisplayIcon="icon.ico"
+MinVersion=10.0.17763
+PrivilegesRequired=admin
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
