@@ -68,6 +68,9 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
                         return jComboBox3;
                     }
                     if (cmpnt == jComboBox3) {
+                        return jComboBox4;
+                    }
+                    if (cmpnt == jComboBox4) {
                         return jButton1;
                     }
                     if (cmpnt == jButton1) {
@@ -91,8 +94,11 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
                     if (cmpnt == jComboBox3) {
                         return jComboBox2;
                     }
-                    if (cmpnt == jButton1) {
+                    if (cmpnt == jComboBox4) {
                         return jComboBox3;
+                    }
+                    if (cmpnt == jButton1) {
+                        return jComboBox4;
                     }
                 } else {
                     return jButton1;
@@ -168,6 +174,8 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
         jComboBox3 = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jComboBox4 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Total System Latecy Test - Configuration");
@@ -198,6 +206,11 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
 
         jLabel4.setText("Notes...");
 
+        jLabel5.setText("Test duration");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "20 seconds", "1 minute", "2 minutes", "5 minutes" }));
+        jComboBox4.setSelectedIndex(1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -222,7 +235,11 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -241,9 +258,13 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -255,15 +276,29 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
         setVisible(false);
         notesUpdater.stop();
         int vsyncMode = jComboBox1.getSelectedIndex();
-        long fakeCPULoadMs = 0, fakeGPULoadMs = 0;
+        long fakeCPULoadMs = 0, fakeGPULoadMs = 0, duration = 20000;
         if (jComboBox2.getSelectedIndex() > 0) {
             fakeCPULoadMs = Long.parseLong(((String) jComboBox2.getSelectedItem()).split(" ")[0].trim());
         }
         if (jComboBox3.getSelectedIndex() > 0) {
             fakeGPULoadMs = Long.parseLong(((String) jComboBox3.getSelectedItem()).split(" ")[0].trim());
         }
+        switch (jComboBox4.getSelectedIndex()) {
+            case 0:
+                duration = 20000;
+                break;
+            case 1:
+                duration = 60000;
+                break;
+            case 2:
+                duration = 120000;
+                break;
+            case 3:
+                duration = 300000;
+                break;
+        }
         String vSyncModeString = (String) jComboBox1.getSelectedItem(), fakeCPULoadString = (String) jComboBox2.getSelectedItem(), fakeGPULoadString = (String) jComboBox3.getSelectedItem();
-        InputLagTest test = new InputLagTest(d, 20000, vsyncMode, fakeCPULoadMs, fakeGPULoadMs) {
+        InputLagTest test = new InputLagTest(d, duration, vsyncMode, fakeCPULoadMs, fakeGPULoadMs) {
             @Override
             public void onDone(Map results) {
                 EventQueue.invokeLater(new Runnable() {
@@ -333,9 +368,11 @@ public abstract class InputLagTestStarter extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }

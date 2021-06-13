@@ -42,10 +42,10 @@ public abstract class InputLagTest extends Thread implements ITest {
     private final Device d;
     private final ITestScreen ts;
     private boolean enterPressed, escPressed, stopASAP = false;
-    private int durationMs;
+    private long durationMs;
     private static final boolean unbuffered = false, fastADC = true;
 
-    public InputLagTest(Device d, int durationMs, int vsyncMode, long fakeCPULoadMs, long fakeGPULoadMs) {
+    public InputLagTest(Device d, long durationMs, int vsyncMode, long fakeCPULoadMs, long fakeGPULoadMs) {
         this.d = d;
         this.durationMs = durationMs;
         if (Config.TESTSCREEN_GL) {
