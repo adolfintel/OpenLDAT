@@ -4,6 +4,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/inputlag/InteractiveInputLagTestUI.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/microstuttering/StutteringDetectionTest.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/pixelresponse/PixelResponseTestResults.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/inputlag/InteractiveInputLagTest.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/pwm/PWMDetectionTestUI.java</file>
@@ -17,6 +18,7 @@
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/pixelresponse/PixelResponseTimeTest.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/overdrive/PixelOverdriveTestResults.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/processing/filters/FFTFilter.java</file>
+            <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/light2sound/InteractiveLightToSound.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/tests/overdrive/PixelOverdriveTest.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/tests/driver/DriverTestMenu.java</file>
             <file>file:/home/dosse/Desktop/OpenLDAT/App/OpenLDAT/src/com/dosse/openldat/ui/manual/test_inputlag_auto.html</file>

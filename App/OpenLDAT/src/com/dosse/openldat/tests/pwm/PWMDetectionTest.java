@@ -92,7 +92,7 @@ public abstract class PWMDetectionTest extends Thread implements ITest {
         }
     }
 
-    public static double detectPWMFrequency(int data[], double sampleRate, double intensityThreshold, double minFreq, double maxFreq) {
+    public static double detectPWMFrequency(int data[], double sampleRate, double minFreq, double maxFreq) {
         double[][] freqs = new double[data.length][2];
         for (int i = 0; i < data.length; i++) {
             freqs[i][0] = ((double)i/(double)data.length)*(sampleRate/2.0) ;
@@ -101,20 +101,19 @@ public abstract class PWMDetectionTest extends Thread implements ITest {
         if (freqs[0][1] == 0) {
             return 0;
         }
-        intensityThreshold *= freqs[0][1];
         double pwmFreq = 0, maxIntensity = 0;
         double f, p;
         for (double[] freq : freqs) {
             f = freq[0];
             p = freq[1];
-            if (f >= minFreq && f <= maxFreq && p >= intensityThreshold && p > 0) {
+            if (f >= minFreq && f <= maxFreq && p > 0) {
                 if (p > maxIntensity) {
                     pwmFreq = f;
                     maxIntensity = p;
                 }
             }
         }
-        if (maxIntensity < data.length * 0.015625) {
+        if (maxIntensity < data.length * 0.15) {
             return 0;
         } else {
             return pwmFreq;
@@ -191,7 +190,7 @@ public abstract class PWMDetectionTest extends Thread implements ITest {
                     break;
                 }
             }
-            int bSize = (int) (d.getLightSensorMonitorModeSampleRate(true, true) * 3);
+            int bSize = (int) (d.getLightSensorMonitorModeSampleRate(true, true) * 1);
             bSize = (int) Math.pow(2, Math.ceil(Math.log(bSize) / Math.log(2)));
             FFTFilter b = new FFTFilter(bSize);
             double sampleRate = d.lightSensorMonitorMode(true, sensitivity, true, new LightSensorMonitorCallback() {
@@ -231,7 +230,7 @@ public abstract class PWMDetectionTest extends Thread implements ITest {
             if (escPressed) {
                 throw new TestException(TestException.USER_ABORT);
             }
-            double pwmFreq = detectPWMFrequency(b.getData(), sampleRate, 0.002, 40, 2500);
+            double pwmFreq = detectPWMFrequency(b.getData(), sampleRate, 40, 2500);
             ts.close();
             ret.put("frequency", pwmFreq);
             ret.put("raw", b.getOriginalData());
