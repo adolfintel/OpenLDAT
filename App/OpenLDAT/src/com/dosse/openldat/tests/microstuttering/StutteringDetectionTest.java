@@ -247,16 +247,16 @@ public abstract class StutteringDetectionTest extends Thread implements ITest {
             for (int i = 0; i < samples.length; i++) {
                 samples[i] = (int) (1023 * ((double) (samples[i] - min) / range));
             }
-            min = 0;
-            range = 1023;
             /*DataOutputStream fos = new DataOutputStream(new FileOutputStream("microstuttering.dat"));
             for (int i : samples) {
                 fos.writeInt(i<<21);
             }
             fos.flush();
             fos.close();*/
-            whiteThreshold = min + range * 0.4f; //above this it's considered white
-            blackThreshold = min + range * 0.6f; //below this it's considered black
+            int[] sortedSamples=Arrays.copyOf(samples, samples.length);
+            Arrays.sort(sortedSamples);
+            whiteThreshold = sortedSamples[(int)(sortedSamples.length*0.4)]; //above this it's considered white
+            blackThreshold = sortedSamples[(int)(sortedSamples.length*0.6)]; //below this it's considered black
             ArrayList<Integer> transitions = new ArrayList<>();
             byte state = 0;
             for (int i = 1; i < samples.length; i++) {
