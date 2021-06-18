@@ -385,7 +385,7 @@ public abstract class InteractiveInputLagTestUI extends javax.swing.JFrame {
 
         jLabel2.setText("Starting...");
 
-        jLabel6.setText("Sensitivity:");
+        jLabel6.setText("Sensitivity");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Low", "Medium", "High", "Maximum" }));
         jComboBox1.setSelectedIndex(2);
