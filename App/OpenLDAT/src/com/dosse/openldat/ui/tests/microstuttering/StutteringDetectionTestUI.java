@@ -57,7 +57,7 @@ public abstract class StutteringDetectionTestUI extends javax.swing.JFrame {
         if (stutters != 0) {
             jLabel2.setForeground(new Color(255, 96, 16));
         }
-        asText = "FlickeringDetected\t" + flickeringDetected + "\r\n\r\nRun\tTime\tStutter\r\n";
+        asText = "FlickeringDetected\t" + flickeringDetected + "\r\nStutteringThreshold\t" + threshold + "\r\n\r\nRun\tTime\tStutter\r\n";
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         for (int i = 0; i < times.length; i++) {
             dtm.addRow(new Object[]{(Integer) (i + 1), times[i]});
@@ -68,8 +68,11 @@ public abstract class StutteringDetectionTestUI extends javax.swing.JFrame {
         for (int i = 0; i < times.length; i++) {
             xvals[i] = (double) i / (double) times.length;
             yvals[i] = times[i];
+            if (times[i] > max) {
+                max = times[i];
+            }
         }
-        max = threshold * 1.3;
+        max = (max > threshold ? max : threshold) * 1.3;
         chart1.addEnvelope(new ConstantEnvelope(new double[]{0}, new double[]{threshold}, 0, max, new Color(255, 96, 16)));
         chart1.addEnvelope(new ConstantEnvelope(xvals, yvals, 0, max, new Color(128, 255, 96)));
         chart1.setGrids(false, 0, 0, 0, 0, true, 0, max, max * 0.2, 0);
@@ -328,7 +331,6 @@ public abstract class StutteringDetectionTestUI extends javax.swing.JFrame {
         }
         try {
             BufferedWriter w = new BufferedWriter(new FileWriter(f));
-            w.write("Run\tTime\tStutter\r\n");
             w.write(asText);
             w.flush();
             w.close();
@@ -354,7 +356,7 @@ public abstract class StutteringDetectionTestUI extends javax.swing.JFrame {
             return;
         }
         if (!Config.TESTSCREEN_GL) {
-            ErrorDialog e = new ErrorDialog(new ApplicationError("OpenGL required","This test requires accurate timing that cannot be achieved with the Swing backend",null)) {
+            ErrorDialog e = new ErrorDialog(new ApplicationError("OpenGL required", "This test requires accurate timing that cannot be achieved with the Swing backend", null)) {
                 @Override
                 public void onClose() {
                     doneCallback.run();

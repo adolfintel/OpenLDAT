@@ -21,6 +21,7 @@ import com.dosse.openldat.device.callbacks.LightSensorMonitorCallback;
 import com.dosse.openldat.device.errors.MissingSensorException;
 import com.dosse.openldat.processing.buffers.CircularBuffer;
 import com.dosse.openldat.processing.buffers.IBuffer;
+import com.dosse.openldat.processing.filters.FFTFilter;
 import com.dosse.openldat.tests.ITest;
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
@@ -42,9 +43,10 @@ public abstract class InteractiveLightToSound implements ITest {
     private final boolean fastADC = true, unbuffered = false;
 
     private IBuffer chartBuffer;
+    private FFTFilter fft;
 
     private LightSensorMonitorCallback callback;
-    
+
     private int volMul = 32;
 
     public InteractiveLightToSound(Device d) throws MissingSensorException, IOException {
@@ -52,6 +54,9 @@ public abstract class InteractiveLightToSound implements ITest {
         sampleRate = d.getLightSensorMonitorModeSampleRate(unbuffered, fastADC);
         try {
             chartBuffer = new CircularBuffer((int) (sampleRate * 0.5));
+            int fftSize = (int) (sampleRate * 0.5);
+            fftSize = (int) Math.pow(2, Math.ceil(Math.log(fftSize) / Math.log(2)));
+            fft = new FFTFilter(fftSize);
             AudioFormat af = new AudioFormat((float) sampleRate, 16, 1, true, false); //16 bit, big endian, signed
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
             speaker = (SourceDataLine) AudioSystem.getLine(info);
@@ -64,6 +69,7 @@ public abstract class InteractiveLightToSound implements ITest {
             @Override
             public void onDataBufferReceived(int[] data) {
                 chartBuffer.add(data);
+                fft.add(data);
                 byte[] buf = new byte[data.length * 2];
                 for (int i = 0; i < data.length; i++) {
                     data[i] *= volMul;
@@ -78,6 +84,7 @@ public abstract class InteractiveLightToSound implements ITest {
             @Override
             public void onDataSampleReceived(int data) {
                 chartBuffer.add(data);
+                fft.add(data);
                 data *= volMul;
                 singleSampleBuf[1] = (byte) ((data >> 8) & 0xFF);
                 singleSampleBuf[0] = (byte) (data & 0xFF);
@@ -119,8 +126,26 @@ public abstract class InteractiveLightToSound implements ITest {
     public IBuffer getChartBuffer() {
         return chartBuffer;
     }
-    
-    public double getSampleRate(){
+
+    public double getStrongestFrequency(double from, double to) {
+        int[] bins = fft.getData();
+        double ret = -1;
+        int max = 0;
+        for (int i = 0; i < bins.length; i++) {
+            double freq = ((double) i / (double) bins.length) * (sampleRate / 2.0);
+            if (freq >= from && freq <= to && bins[i] > max) {
+                max = bins[i];
+                ret = freq;
+            }
+        }
+        if (max < bins.length * 0.15) {
+            return -1;
+        } else {
+            return ret;
+        }
+    }
+
+    public double getSampleRate() {
         return sampleRate;
     }
 
@@ -147,6 +172,5 @@ public abstract class InteractiveLightToSound implements ITest {
         speaker.close();
         onDone(null);
     }
-   
 
 }
