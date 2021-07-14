@@ -4,7 +4,7 @@ OpenLDAT is a Free and Open Source solution to measure and analyze display laten
 We're still working on it, so come back later if you're interested :)
 
 ## License
-CCopyright (C) 2021 Federico Dossena
+Copyright (C) 2021 Federico Dossena
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

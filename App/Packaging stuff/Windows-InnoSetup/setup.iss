@@ -36,3 +36,7 @@ Source: "openldat\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs crea
 [Icons]
 Name: "{group}\OpenLDAT"; Filename: "{app}\OpenLDAT.exe"
 Name: "{commondesktop}\OpenLDAT"; Filename: "{app}\OpenLDAT.exe"
+
+[UninstallDelete]
+Type: filesandordirs; Name: "{userappdata}\openldat"
+Type: filesandordirs; Name: "{localappdata}\openldat"
