@@ -20,10 +20,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileLock;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -92,6 +89,9 @@ public class Utils {
                     dpiScaling = 1;
                 }
             } catch (Throwable t) { //error, give up
+                dpiScaling = 1;
+            }
+            if (dpiScaling < 0.5 ) { //may happen on wayland
                 dpiScaling = 1;
             }
             return dpiScaling;
