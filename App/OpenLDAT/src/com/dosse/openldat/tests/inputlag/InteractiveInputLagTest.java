@@ -30,7 +30,7 @@ public abstract class InteractiveInputLagTest implements ITest {
     private Device d;
     private int threshold = 100;
     private byte sensitivity = 2, state = 0; //0=waiting for click, 1=waiting for light, 2=waiting for dark
-    private boolean autoFire = false;
+    private boolean autoFire = false, noClick = true;
     private static final boolean unbuffered = false, fastADC = true;
     private IBuffer lWindow, cWindow;
     private final double sampleRate;
@@ -147,7 +147,7 @@ public abstract class InteractiveInputLagTest implements ITest {
     @Override
     public void begin() {
         try {
-            d.lightSensorButtonMode(unbuffered, sensitivity, fastADC, !autoFire, autoFire, callback);
+            d.lightSensorButtonMode(unbuffered, sensitivity, fastADC, noClick, autoFire, callback);
         } catch (Exception ex) {
             onError(ex);
         }
@@ -188,9 +188,36 @@ public abstract class InteractiveInputLagTest implements ITest {
         this.autoFire = autofire;
         begin();
     }
+    
+    public void setNoClick(boolean noClick) {
+        if (noClick == this.noClick) {
+            return;
+        }
+        this.noClick = noClick;
+        begin();
+    }
+
+    public void setFlags(boolean autofire, boolean noClick) {
+        boolean changed = false;
+        if (autofire != this.autoFire) {
+            this.autoFire = autofire;
+            changed = true;
+        }
+        if (noClick != this.noClick) {
+            this.noClick = noClick;
+            changed = true;
+        }
+        if (changed) {
+            begin();
+        }
+    }
 
     public boolean getAutoFire() {
         return autoFire;
+    }
+    
+    public boolean getNoClick(){
+        return noClick;
     }
 
     public byte getState() {

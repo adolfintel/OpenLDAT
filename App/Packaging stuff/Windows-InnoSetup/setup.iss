@@ -1,6 +1,7 @@
+ 
 [Setup]
 AppName="OpenLDAT"
-AppVersion="1.0.0"
+AppVersion="1.1.0"
 AppPublisher="Federico Dossena"
 AppPublisherURL="https://openldat.fdossena.com"
 AppSupportURL="https://openldat.fdossena.com"
@@ -11,7 +12,7 @@ DefaultGroupName="OpenLDAT"
 DisableProgramGroupPage=yes
 LicenseFile=gpl-3.0.txt
 OutputDir=.
-OutputBaseFilename=OpenLDAT_Setup
+OutputBaseFilename=OpenLDAT_win64_Setup
 Compression=lzma2/ultra64
 LZMAAlgorithm=1
 LZMAMatchFinder=BT
@@ -25,6 +26,7 @@ SetupIconFile="icon.ico"
 UninstallDisplayIcon="icon.ico"
 MinVersion=10.0.17763
 PrivilegesRequired=admin
+
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

@@ -40,6 +40,7 @@ void identify(byte flags) {
   Serial.println(LARGE_BUFFER_SIZE);
   Serial.print(F("SBuffer: "));
   Serial.println(SMALL_BUFFER_SIZE);
+  Serial.println(F("FastAnalogRead: 1"));
   #else
   Serial.println(F("0"));
   #endif

@@ -64,7 +64,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jPanel2" pref="239" max="32767" attributes="0"/>
+                  <Component id="jPanel2" pref="181" max="32767" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -91,7 +91,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;Version 1.0.0&lt;br/&gt;&amp;copy; 2021 Federico Dossena&lt;br/&gt;This program is free software distributed under the GNU GPL v3 license&lt;/html&gt;"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;Version 1.1&lt;br/&gt;&amp;copy; 2021-2023 Federico Dossena&lt;br/&gt;This program is free software distributed under the GNU GPL v3 license&lt;/html&gt;"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel2">

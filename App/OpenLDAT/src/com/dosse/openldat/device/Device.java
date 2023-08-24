@@ -30,23 +30,23 @@ import java.io.InputStream;
  * @author dosse
  */
 public class Device {
-    
-    public static final int DRIVER_VERSION = 1;
-    
+
+    public static final int DRIVER_VERSION = 2;
+
     private SerialPort com;
     private InputStream in;
-    private boolean hasLightSensor, isPrototype, oscilloscopeDebug;
+    private boolean hasLightSensor, isPrototype, oscilloscopeDebug, hasFastAnalogRead = false;
     private int largeBufferSize = -1, smallBufferSize = -1;
     private String firmwareVersion, serialNumber;
     private int model = -1, minver = -1;
-    
+
     private Thread workerThread = null;
     private boolean stopWorkerThreadASAP = false;
-    
+
     private static final byte COMMAND_ID = 0x44,
             COMMAND_IDLE = 0x49,
             COMMAND_LIGHTSENSOR = 0x4C;
-    
+
     private static final byte LIGHTSENSOR_FEATURE_AUTOFIRE = 0b00000001,
             LIGHTSENSOR_FEATURE_NOBUFFER = 0b00000010,
             LIGHTSENSOR_FEATURE_HIGHSENS1 = 0b00000100,
@@ -54,9 +54,9 @@ public class Device {
             LIGHTSENSOR_FEATURE_NOCLICK = 0b00010000,
             LIGHTSENSOR_FEATURE_FASTADC = 0b00100000,
             LIGHTSENSOR_FEATURE_HIGHSENS2 = 0b01000000;
-    
+
     private static final byte NO_FLAGS = 0x00;
-    
+
     public Device(SerialPort com) throws DeviceError {
         this.com = com;
         String name = com.getPortDescription().toLowerCase().trim();
@@ -104,6 +104,11 @@ public class Device {
                                 lines++;
                                 break;
                             }
+                            case "FastAnalogRead": {
+                                hasFastAnalogRead = value.equals("1");
+                                lines++;
+                                break;
+                            }
                             case "OscilloscopeDebug": {
                                 oscilloscopeDebug = value.equals("1");
                                 lines++;
@@ -140,7 +145,7 @@ public class Device {
                 if (lines == 0) {
                     throw new DeviceError(DeviceError.DEVICE_ID_FAILED);
                 }
-                if (minver < DRIVER_VERSION) {
+                if (minver > DRIVER_VERSION) {
                     throw new DeviceError(DeviceError.FIRMWARE_NEEDS_NEWER_DRIVER);
                 }
                 if (firmwareVersion == null) {
@@ -159,11 +164,11 @@ public class Device {
             throw new DeviceError(DeviceError.NOT_OPENLDAT_DEVICE);
         }
     }
-    
+
     private void sendCommand(byte cmd, byte flags) {
         com.writeBytes(new byte[]{cmd, flags}, 2);
     }
-    
+
     private String readString() {
         StringBuilder b = new StringBuilder();
         while (true) {
@@ -180,32 +185,32 @@ public class Device {
         }
         return b.toString().trim();
     }
-    
+
     private int readUInt16() throws IOException {
         return (in.read() & 0xFF) | ((in.read() & 0xFF) << 8);
     }
-    
+
     private int readUInt8() throws IOException {
         return in.read() & 0xFF;
     }
-    
+
     private void readUInt16Array(int[] buffer) throws IOException {
         for (int i = 0; i < buffer.length; i++) {
             buffer[i] = (in.read() & 0xFF) | ((in.read() & 0xFF) << 8);
         }
     }
-    
+
     private void readUInt8Array(int[] buffer) throws IOException {
         for (int i = 0; i < buffer.length; i++) {
             buffer[i] = in.read() & 0xFF;
         }
     }
-    
+
     private float readFloat32() throws IOException {
         int temp = (in.read() & 0xFF) | ((in.read() & 0xFF) << 8) | ((in.read() & 0xFF) << 16) | ((in.read() & 0xFF) << 24);
         return Float.intBitsToFloat(temp);
     }
-    
+
     public void endCurrentActivity() {
         sendCommand(COMMAND_IDLE, NO_FLAGS);
         if (workerThread != null) {
@@ -219,7 +224,7 @@ public class Device {
         }
         waitForInactivity();
     }
-    
+
     private void waitForInactivity() {
         try {
             long lastRead = System.currentTimeMillis();
@@ -232,77 +237,97 @@ public class Device {
         } catch (IOException ex) {
         }
     }
-    
+
     public void close() {
         if (com.isOpen()) {
             endCurrentActivity();
             com.closePort();
         }
     }
-    
+
     public boolean isOpen() {
         return com.isOpen();
     }
-    
+
     public boolean hasLightSensor() {
         return hasLightSensor;
     }
-    
+
     public boolean isPrototype() {
         return isPrototype;
     }
-    
+
     public boolean hasOscilloscopeDebug() {
         return oscilloscopeDebug;
     }
     
+    public boolean hasFastAnalogRead(){
+        return hasFastAnalogRead;
+    }
+
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
-    
+
     public String getModel() {
         return com.getPortDescription();
     }
-    
+
     public int getModelCode() {
         return model;
     }
-    
+
     public String getPortName() {
         return com.getSystemPortName();
     }
-    
+
     public int getMinDriverVersion() {
         return minver;
     }
-    
+
     public String getSerialNumber() {
         return serialNumber;
     }
-    
+
     public boolean isBusy() {
         return workerThread != null && workerThread.isAlive();
     }
-    
+
     public double getLightSensorMonitorModeSampleRate(boolean noBuffer, boolean fastADC) throws MissingSensorException {
         if (!hasLightSensor) {
             throw new MissingSensorException(MissingSensorException.LIGHT_SENSOR);
         }
-        if (noBuffer) {
-            if (fastADC) {
-                return 21000.0;
+        if (hasFastAnalogRead) {
+            if (noBuffer) {
+                if (fastADC) {
+                    return 21390.0;
+                } else {
+                    return 7812.0;
+                }
             } else {
-                return 7798.0;
+                if (fastADC) {
+                    return 31360.0;
+                } else {
+                    return 8787.2;
+                }
             }
         } else {
-            if (fastADC) {
-                return 29574.4;
+            if (noBuffer) {
+                if (fastADC) {
+                    return 21000.0;
+                } else {
+                    return 7798.0;
+                }
             } else {
-                return 8780.8;
+                if (fastADC) {
+                    return 29574.4;
+                } else {
+                    return 8780.8;
+                }
             }
         }
     }
-    
+
     public double lightSensorMonitorMode(boolean noBuffer, byte sensitivity, boolean fastADC, LightSensorMonitorCallback callback) throws MissingSensorException, IOException {
         if (!com.isOpen()) {
             throw new IOException("Device closed");
@@ -366,26 +391,42 @@ public class Device {
         workerThread.start();
         return getLightSensorMonitorModeSampleRate(noBuffer, fastADC);
     }
-    
+
     public double getLightSensorButtonModeSampleRate(boolean noBuffer, boolean fastADC) throws MissingSensorException {
         if (!hasLightSensor) {
             throw new MissingSensorException(MissingSensorException.LIGHT_SENSOR);
         }
-        if (noBuffer) {
-            if (fastADC) {
-                return 20710.0;
+        if (hasFastAnalogRead) {
+            if (noBuffer) {
+                if (fastADC) {
+                    return 21760;
+                } else {
+                    return 7798.0;
+                }
             } else {
-                return 7796.0;
+                if (fastADC) {
+                    return 29001.0;
+                } else {
+                    return 8744.4;
+                }
             }
         } else {
-            if (fastADC) {
-                return 28896.0;
+            if (noBuffer) {
+                if (fastADC) {
+                    return 20710.0;
+                } else {
+                    return 7796.0;
+                }
             } else {
-                return 8738.1;
+                if (fastADC) {
+                    return 28896.0;
+                } else {
+                    return 8738.1;
+                }
             }
         }
     }
-    
+
     public double lightSensorButtonMode(boolean noBuffer, byte sensitivity, boolean fastADC, boolean noClick, boolean autoFire, LightSensorButtonCallback callback) throws MissingSensorException, IOException {
         if (!com.isOpen()) {
             throw new IOException("Device closed");
@@ -450,5 +491,5 @@ public class Device {
         workerThread.start();
         return getLightSensorButtonModeSampleRate(noBuffer, fastADC);
     }
-    
+
 }

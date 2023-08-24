@@ -27,8 +27,10 @@ void buttonISR() {
       buttonPressed = 1;
       Mouse.press(MOUSE_LEFT);
     }else{
-      Mouse.release(MOUSE_LEFT);  
+      Mouse.release(MOUSE_LEFT);
     }
+  }else{
+    Mouse.release(MOUSE_LEFT);
   }
   lastButtonISR = t;
 }
@@ -55,6 +57,11 @@ void autofireISR_noclick() {
   if(PINE&0x40) buttonPressed = 1;
 }
 
+inline uint16_t fastAnalogReadA0(){ 
+  ADCSRA|=(1<<ADSC);
+  while(ADCSRA&(1<<ADSC));
+  return ADC;
+}
 
 void lightSensor_resetPins() {
   //disable button power and set pin to high impedance
@@ -83,7 +90,7 @@ void lightSensor_unbuffered_click() {
   #endif
   while (!Serial.available()) {
     OSCILLOSCOPE_DEBUG_PULSE();
-    *v = analogRead(A0);
+    *v = fastAnalogReadA0();
     *b = buttonPressed;
     buttonPressed = 0;
     #ifdef SERIAL_DEBUG
@@ -108,7 +115,7 @@ void lightSensor_unbuffered_monitor() {
   #endif
   while (!Serial.available()) {
     OSCILLOSCOPE_DEBUG_PULSE();
-    v = analogRead(A0);
+    v = fastAnalogReadA0();
     #ifdef SERIAL_DEBUG
     Serial.println(v);
     #else
@@ -129,7 +136,7 @@ void lightSensor_buffered_monitor() {
   #endif
   OSCILLOSCOPE_DEBUG_PULSE();
   while (!Serial.available()) {
-    buffer[counter] = analogRead(A0);
+    buffer[counter] = fastAnalogReadA0();
     if (++counter == LARGE_BUFFER_SIZE) {
       OSCILLOSCOPE_DEBUG_PULSE();
       #ifdef SERIAL_DEBUG
@@ -160,7 +167,7 @@ void lightSensor_buffered_click() {
   #endif
   OSCILLOSCOPE_DEBUG_PULSE();
   while (!Serial.available()) {
-    sbuffer[counter] = analogRead(A0);
+    sbuffer[counter] = fastAnalogReadA0();
     bbuffer[counter] = buttonPressed;
     buttonPressed = 0;
     if (++counter == SMALL_BUFFER_SIZE) {
@@ -211,7 +218,8 @@ void lightSensor(byte flags) {
   }
   //configure ADC
   if (flags & FEATURE_FASTADC) ADCSRA = (ADCSRA & 0xF80) | 0x05; else ADCSRA = (ADCSRA & 0xF80) | 0x07;
-  ADCSRB |= (1<<ADHSM);
+  ADCSRB = (ADCSRB & ~(1 << MUX5)) | (1<<ADHSM);
+  ADMUX=0b11000111;
   //select sensor gain
   /* HIGHSENS2 | HIGHSENS1 | GAIN   | RESISTANCE between sensor- and gnd
    *    0           0        Low       14.3k (330k, 47k, 22k)

@@ -60,9 +60,10 @@ public abstract class InteractiveLightToSound implements ITest {
             AudioFormat af = new AudioFormat((float) sampleRate, 16, 1, true, false); //16 bit, big endian, signed
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
             speaker = (SourceDataLine) AudioSystem.getLine(info);
-            speaker.open(af, 8192);
+            speaker.open(af,2048);
             speaker.start();
         } catch (Throwable t) {
+            t.printStackTrace();
             throw new IOException("Failed to open sound device");
         }
         callback = new LightSensorMonitorCallback() {

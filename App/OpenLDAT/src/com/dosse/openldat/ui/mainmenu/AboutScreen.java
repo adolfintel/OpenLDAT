@@ -142,7 +142,7 @@ public class AboutScreen extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("<html>Version 1.0.0<br/>&copy; 2021 Federico Dossena<br/>This program is free software distributed under the GNU GPL v3 license</html>");
+        jLabel2.setText("<html>Version 1.1<br/>&copy; 2021-2023 Federico Dossena<br/>This program is free software distributed under the GNU GPL v3 license</html>");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("License"));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
@@ -169,7 +169,7 @@ public class AboutScreen extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap())

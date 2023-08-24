@@ -23,6 +23,7 @@ import com.dosse.openldat.tests.TestException;
 import com.dosse.openldat.tests.light2sound.InteractiveLightToSound;
 import com.dosse.openldat.ui.errordialog.ErrorDialog;
 import com.dosse.openldat.ui.chart.Channel;
+import com.dosse.openldat.ui.errordialog.ApplicationError;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -64,7 +65,7 @@ public abstract class LightToSoundUI extends javax.swing.JFrame {
                 }
             };
         } catch (Exception ex) {
-
+            return;
         }
         jLabel3.setText(String.format("%.1f", test.getSampleRate()));
         test.begin();
@@ -378,8 +379,26 @@ public abstract class LightToSoundUI extends javax.swing.JFrame {
                 doneCallback.run();
             }
         };
-        Utils.focusWindow(ui);
-        ui.setVisible(true);
+        if(ui.test==null){
+            if(Utils.isLinux()){
+                new ErrorDialog(new ApplicationError("Sound system error", "Failed to initialize the sound system. Make sure pulseaudio is installed (or its alsa plugin)", null)) {
+                    @Override
+                    public void onClose() {
+                        doneCallback.run();
+                    }
+                };
+            }else{
+                new ErrorDialog(new ApplicationError("Sound system error", "Failed to initialize the sound system", null)) {
+                    @Override
+                    public void onClose() {
+                        doneCallback.run();
+                    }
+                };
+            }
+        }else{
+            Utils.focusWindow(ui);
+            ui.setVisible(true);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
