@@ -91,7 +91,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;Version 1.1&lt;br/&gt;&amp;copy; 2021-2023 Federico Dossena&lt;br/&gt;This program is free software distributed under the GNU GPL v3 license&lt;/html&gt;"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;Version 1.1.1&lt;br/&gt;&amp;copy; 2021-2023 Federico Dossena&lt;br/&gt;This program is free software distributed under the GNU GPL v3 license&lt;/html&gt;"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel2">

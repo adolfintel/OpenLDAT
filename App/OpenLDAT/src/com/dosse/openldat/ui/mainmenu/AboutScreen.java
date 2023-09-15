@@ -142,7 +142,7 @@ public class AboutScreen extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("<html>Version 1.1<br/>&copy; 2021-2023 Federico Dossena<br/>This program is free software distributed under the GNU GPL v3 license</html>");
+        jLabel2.setText("<html>Version 1.1.1<br/>&copy; 2021-2023 Federico Dossena<br/>This program is free software distributed under the GNU GPL v3 license</html>");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("License"));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));

@@ -79,9 +79,10 @@
     <Component class="javax.swing.JComboBox" name="jComboBox1">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
+          <StringArray count="3">
             <StringItem index="0" value="VESA Standard (10-90%)"/>
             <StringItem index="1" value="BS Manufacturers Say (30-70%)"/>
+            <StringItem index="2" value="Full range (0-100%)"/>
           </StringArray>
         </Property>
       </Properties>

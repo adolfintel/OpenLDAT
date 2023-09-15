@@ -118,7 +118,7 @@ public abstract class PixelResponseTestStarter extends javax.swing.JFrame {
 
         jLabel1.setText("Evaluation method");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VESA Standard (10-90%)", "BS Manufacturers Say (30-70%)" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VESA Standard (10-90%)", "BS Manufacturers Say (30-70%)", "Full range (0-100%)" }));
 
         jButton1.setText("Run test");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -196,6 +196,10 @@ public abstract class PixelResponseTestStarter extends javax.swing.JFrame {
             case 1:
                 th1 = 0.3;
                 th2 = 0.7;
+                break;
+            case 2:
+                th1 = 0.01;
+                th2 = 0.99;
                 break;
         }
         PixelResponseTimeTest test = new PixelResponseTimeTest(d, step, (float) th1, (float) th2) {

@@ -80,7 +80,7 @@ public abstract class PixelOverdriveTestResults extends javax.swing.JFrame {
             asText += steps[i] + "\t";
         }
         asText += "\r\n";
-        Object[][] rows = new Object[steps.length - (skipTo0And255 ? 2 : steps.length)][steps.length + 1];
+        Object[][] rows = new Object[steps.length - (skipTo0And255 ? 2 : 0)][steps.length + 1];
         for (int row = 0; row < rows.length; row++) {
             rows[row][0] = "To " + steps[row + (skipTo0And255 ? 1 : 0)];
             asText += steps[row + (skipTo0And255 ? 1 : 0)] + "\t";
@@ -274,7 +274,7 @@ public abstract class PixelOverdriveTestResults extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
